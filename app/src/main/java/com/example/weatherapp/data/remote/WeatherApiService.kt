@@ -10,17 +10,18 @@ import retrofit2.http.Query
 interface WeatherApiService {
 
 
-    @GET("weather/")                       //lat={lat}&lon={lon}&appid={API key}
+    @GET("weather")                       //lat={lat}&lon={lon}&appid={API key}
     suspend fun getCurrentWeather(
         @Query("q") city: String? = "dubai",
         @Query("appid") apiKey:String=WeatherApi.ApiKey
     ): Response<Weather>
 
-    @GET("onecall/")                       //lat=33.44&lon=-94.04&appid=638873d67ed5e6b048959ade3c44ce47&exclude=hourly,minutely
+    @GET("onecall")                       //lat=33.44&lon=-94.04&appid=638873d67ed5e6b048959ade3c44ce47&exclude=hourly,minutely
     suspend fun getWeatherForecast(
         @Query("lat") lat:Double,
         @Query("lon") log: Double,
-        @Query("appid") pageSize:String=WeatherApi.ApiKey
+        @Query("appid") apiKey:String=WeatherApi.ApiKey,
+        @Query("exclude") exclude:String="hourly,minutely"
     ) : Response<WeatherForecast>
 
 

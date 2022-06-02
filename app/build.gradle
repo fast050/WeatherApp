@@ -6,6 +6,7 @@ plugins {
     id 'androidx.navigation.safeargs'
     id 'dagger.hilt.android.plugin'
 }
+apply plugin: 'kotlin-android'
 
 android {
     compileSdk 32
@@ -25,6 +26,17 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+
+        prod {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        stg {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -33,6 +45,8 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+
 }
 
 dependencies {
@@ -70,5 +84,14 @@ dependencies {
     // hilt
     implementation "com.google.dagger:hilt-android:2.38.1"
     kapt "com.google.dagger:hilt-compiler:2.38.1"
+    implementation "androidx.core:core-ktx:1.7.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:"
+
+    // Needed for unit testing API
+    testImplementation "androidx.arch.core:core-testing:2.1.0"
+
+    //MockWebserver
+    testImplementation('com.squareup.okhttp3:mockwebserver:4.9.1')
+
 
 }
