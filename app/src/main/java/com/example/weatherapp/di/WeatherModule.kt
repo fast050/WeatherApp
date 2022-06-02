@@ -3,6 +3,7 @@ package com.example.weatherapp.di
 import android.content.Context
 import androidx.room.Room
 import com.example.weatherapp.data.local.database.WeatherDao
+import com.example.weatherapp.data.local.database.WeatherDatabase
 import com.example.weatherapp.data.remote.WeatherApi
 import com.example.weatherapp.data.remote.WeatherApiService
 import dagger.Module
@@ -19,22 +20,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object WeatherModule {
-  //  @Singleton
-   // @Provides
-//    fun provideWeatherDatabase(
-  //      @ApplicationContext context: Context,
-
-//    ): WeatherDatabase {
-//        return Room.databaseBuilder(context, WeatherDatabase::class.java, WeatherDatabase.DATABASE_NAME)
-//            .build()
-//    }
-
-
-    //no need to add singleton cause dao is singleton by RoomDatabase
-//    @Provides
-//    fun providerWeatherDao(weatherDatabase:WeatherDatabase): WeatherDao {
-//        return weatherDatabase.userDao()
-//    }
 
     @Singleton
     @Provides
@@ -42,4 +27,21 @@ object WeatherModule {
         Retrofit.Builder().baseUrl(WeatherApi.BaseURL)
             .addConverterFactory(GsonConverterFactory.create()).build().create()
 
+
+     @Singleton
+     @Provides
+    fun provideWeatherDatabase(
+          @ApplicationContext context: Context,
+
+    ): WeatherDatabase {
+        return Room.databaseBuilder(context, WeatherDatabase::class.java, WeatherDatabase.DATABASE_NAME)
+            .build()
+    }
+
+
+    //no need to add singleton cause dao is singleton by RoomDatabase
+    @Provides
+    fun providerWeatherDao(weatherDatabase:WeatherDatabase): WeatherDao {
+        return weatherDatabase.userDao()
+    }
 }

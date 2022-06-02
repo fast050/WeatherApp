@@ -1,15 +1,13 @@
-package com.example.weatherapp.data.model.weather
+package com.example.weatherapp.data.model.currentweather
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
-import retrofit2.http.Field
 
 
 //the main class
 @Entity
-data class Weather(
+data class CurrentWeather(
     @PrimaryKey
     val id: Int,
     val coord: Coord,

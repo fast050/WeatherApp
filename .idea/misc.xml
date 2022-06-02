@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Fast050/StudioProjects/WeatherApp/app/src/main/res/layout/activity_main.xml" value="0.1641337386018237" />
+        <entry key="..\:/Users/Fast050/StudioProjects/WeatherApp/app/src/main/res/layout/fragment_main.xml" value="0.33" />
+        <entry key="..\:/Users/Fast050/StudioProjects/WeatherApp/app/src/main/res/layout/fragment_search.xml" value="0.1641337386018237" />
         <entry key="..\:/Users/qweta/AndroidStudioProjects/WeatherApp/app/src/main/res/layout/activity_main.xml" value="0.17135416666666667" />
       </map>
     </option>
