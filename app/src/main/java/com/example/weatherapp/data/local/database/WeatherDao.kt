@@ -1,38 +1,33 @@
 package com.example.weatherapp.data.local.database
 
 import androidx.lifecycle.LiveData
+import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.IGNORE
 import androidx.room.Query
-import androidx.room.Update
-import com.example.weatherapp.data.model.weather.Weather
+import com.example.weatherapp.data.model.currentweather.CurrentWeather
 import com.example.weatherapp.data.model.weatherforecast.WeatherForecast
 
+@Dao
 interface WeatherDao {
 
     @Insert(onConflict = IGNORE)
-    suspend fun insertUser(Weather: Weather)
+    suspend fun insertCurrentWeather(currentWeather: CurrentWeather)
 
     @Insert(onConflict = IGNORE)
-    suspend fun insertUser(Weather: WeatherForecast)
-
-    @Update
-    suspend fun updateUser(Weather: Weather)
-
-    @Update
-    suspend fun updateUser(Weather: WeatherForecast)
+    suspend fun insertWeatherForecast(weatherForecast: WeatherForecast)
 
     @Delete
-    suspend fun removeUser(Weather: Weather)
+    suspend fun deleteCurrentWeather(currentWeather: CurrentWeather)
 
     @Delete
-    suspend fun removeUser(Weather: WeatherForecast)
+    suspend fun deleteWeatherForecast(weatherForecast: WeatherForecast)
 
 
-    @Query("select * from Weather")
-    fun getCurrentWeather(userId:Int): LiveData<List<Weather>>
+    @Query("select * from CurrentWeather")
+    fun getCurrentWeather(): LiveData<CurrentWeather>
 
     @Query("select * from WeatherForecast")
-    fun getWeatherForecast(userId:Int): LiveData<List<WeatherForecast>>
+    fun getWeatherForecast(): LiveData<WeatherForecast>
 }
