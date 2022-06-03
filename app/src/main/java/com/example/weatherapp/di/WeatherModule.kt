@@ -6,6 +6,8 @@ import com.example.weatherapp.data.local.database.WeatherDao
 import com.example.weatherapp.data.local.database.WeatherDatabase
 import com.example.weatherapp.data.remote.WeatherApi
 import com.example.weatherapp.data.remote.WeatherApiService
+import com.example.weatherapp.repository.WeatherRepository
+import com.example.weatherapp.repository.WeatherRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,20 +30,31 @@ object WeatherModule {
             .addConverterFactory(GsonConverterFactory.create()).build().create()
 
 
-     @Singleton
-     @Provides
+    @Singleton
+    @Provides
     fun provideWeatherDatabase(
-          @ApplicationContext context: Context,
+        @ApplicationContext context: Context,
 
-    ): WeatherDatabase {
-        return Room.databaseBuilder(context, WeatherDatabase::class.java, WeatherDatabase.DATABASE_NAME)
+        ): WeatherDatabase {
+        return Room.databaseBuilder(
+            context,
+            WeatherDatabase::class.java,
+            WeatherDatabase.DATABASE_NAME
+        )
             .build()
     }
 
 
     //no need to add singleton cause dao is singleton by RoomDatabase
     @Provides
-    fun providerWeatherDao(weatherDatabase:WeatherDatabase): WeatherDao {
+    fun providerWeatherDao(weatherDatabase: WeatherDatabase): WeatherDao {
         return weatherDatabase.userDao()
     }
+
+    @Singleton
+    @Provides
+    fun providerWeatherRepository(
+        weatherApiService: WeatherApiService,
+        weatherDao: WeatherDao
+    ): WeatherRepository = WeatherRepositoryImpl(weatherApiService, weatherDao)
 }

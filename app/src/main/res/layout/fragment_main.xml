@@ -113,7 +113,7 @@
                     style="@style/WeatherApp.Text.Title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="33 w/h"
+                    android:text="33"
                     app:layout_constraintEnd_toEndOf="@+id/textView5"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="@+id/textView5"
@@ -133,7 +133,7 @@
                     style="@style/WeatherApp.Text.Title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="23 km"
+                    android:text="23"
                     app:layout_constraintEnd_toEndOf="@+id/textView7"
                     app:layout_constraintStart_toStartOf="@+id/textView7"
                     app:layout_constraintTop_toBottomOf="@+id/textView7" />
@@ -162,11 +162,13 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/forecast_recycler_view_main"
             android:layout_width="0dp"
             android:layout_height="421dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="16dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cardView"

@@ -13,7 +13,10 @@ interface WeatherApiService {
     @GET("weather")                       //lat={lat}&lon={lon}&appid={API key}
     suspend fun getCurrentWeather(
         @Query("q") city: String? = "dubai",
+        @Query("lat") lat: Double = 25.2582,
+        @Query("lon") lon : Double = 55.3047,
         @Query("appid") apiKey:String=WeatherApi.ApiKey
+
     ): Response<CurrentWeather>
 
     @GET("onecall")                       //lat=33.44&lon=-94.04&appid=638873d67ed5e6b048959ade3c44ce47&exclude=hourly,minutely
