@@ -4,53 +4,50 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     app:cardCornerRadius="15dp"
-    android:layout_marginStart="16dp"
-    android:layout_marginEnd="16dp"
     android:layout_marginBottom="16dp"
     android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:padding="16dp"
         android:layout_width="match_parent"
+        android:padding="@dimen/spacing_normal"
         android:layout_height="wrap_content">
 
 
         <TextView
             android:id="@+id/day_forecast"
+            style="@style/WeatherApp.Text.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:text="Sunday"
-            style="@style/WeatherApp.Text.Title"
-            app:layout_constraintEnd_toStartOf="@+id/description_forecast"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/description_forecast" />
-
-        <TextView
-            android:id="@+id/description_forecast"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Cloud day"
-            style="@style/WeatherApp.Text.Title"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/temp_forecast"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/day_forecast"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/temp_forecast"
+            android:id="@+id/description_forecast"
+            style="@style/WeatherApp.Text.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:text="20"
+            android:text="Cloud day"
+            app:layout_constraintEnd_toStartOf="@+id/guideline3"
+            app:layout_constraintStart_toStartOf="@+id/guideline3"
+            app:layout_constraintTop_toTopOf="@+id/day_forecast" />
+
+        <TextView
+            android:id="@+id/temp_forecast"
             style="@style/WeatherApp.Text.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/spacing_small"
+            android:text="20"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/description_forecast"
             app:layout_constraintTop_toTopOf="@+id/description_forecast" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".50" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

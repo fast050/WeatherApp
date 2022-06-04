@@ -7,6 +7,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import com.example.weatherapp.R
 import com.example.weatherapp.data.local.database.WeatherDao
 import com.example.weatherapp.data.remote.WeatherApi
@@ -26,11 +27,23 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        val binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        val navController = navHostFragment.navController
+        binding.apply {
+
+            val navHostFragment =
+                supportFragmentManager.findFragmentById(navHostFragmentMain.id) as NavHostFragment
+            val navController = navHostFragment.navController
+
+            setupActionBarWithNavController(navController)
+
+            bottomNavigationViewMain.setupWithNavController(navController)
+
+        }
+
+
+
     }
 
     override fun onSupportNavigateUp(): Boolean {

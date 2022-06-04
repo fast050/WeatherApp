@@ -16,17 +16,32 @@
 
 
     <style name="WeatherApp.Text.Title" parent="TextAppearance.MaterialComponents.Headline6">
-        <item name="android:textAppearance"> ?attr/textAppearanceHeadline6 </item>
+        <item name="android:textAppearance">?attr/textAppearanceHeadline6</item>
     </style>
 
     <style name="WeatherApp.Text.SubTitle" parent="TextAppearance.MaterialComponents.Body2">
-        <item name="android:textAppearance"> ?attr/textAppearanceBody2</item>
-        <item name="android:textColor"> ?android:attr/textColorSecondary</item>
+        <item name="android:textAppearance">?attr/textAppearanceBody2</item>
+        <item name="android:textColor">?android:attr/textColorSecondary</item>
     </style>
 
     <style name="WeatherApp.Text.SubTitle.Big" parent="WeatherApp.Text.Title">
-        <item name="android:textColor"> ?android:attr/textColorSecondary</item>
+        <item name="android:textColor">?android:attr/textColorSecondary</item>
     </style>
 
+
+    <style name="WeatherApp.FavoriteCheck" parent="Theme.WeatherApp">
+
+        <item name="android:scaleX">2</item>
+        <item name="android:scaleY">2</item>
+        <item name="android:button">@drawable/selector_favorite</item>
+
+    </style>
+
+    <style name="WeatherApp.Divider" parent="">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_margin">@dimen/spacing_normal</item>
+        <item name="android:background">?attr/dividerHorizontal</item>
+    </style>
 
 </resources>
