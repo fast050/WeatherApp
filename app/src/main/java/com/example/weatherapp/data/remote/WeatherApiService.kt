@@ -15,7 +15,8 @@ interface WeatherApiService {
         @Query("q") city: String? = "dubai",
         @Query("lat") lat: Double = 25.2582,
         @Query("lon") lon : Double = 55.3047,
-        @Query("appid") apiKey:String=WeatherApi.ApiKey
+        @Query("appid") apiKey:String=WeatherApi.ApiKey,
+        @Query("unite") unite:String = "metric"
 
     ): Response<CurrentWeather>
 
