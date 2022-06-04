@@ -21,4 +21,20 @@ class WeatherRepositoryImpl @Inject constructor(
   override suspend fun getWeatherForecastApi(lat:Double,log:Double): Response<WeatherForecast> {
     return weatherApi.getWeatherForecast(lat = lat , log = log )
   }
+
+  override suspend fun saveCurrentWeather(currentWeather: CurrentWeather) {
+    weatherDao.insertCurrentWeather(currentWeather)
+  }
+
+  override suspend fun saveWeatherForecast(weatherForecast: WeatherForecast) {
+    weatherDao.insertWeatherForecast(weatherForecast)
+  }
+
+  override suspend fun deleteCurrentWeather(currentWeather: CurrentWeather) {
+    weatherDao.deleteCurrentWeather(currentWeather)
+  }
+
+  override suspend fun deleteWeatherForecast(weatherForecast: WeatherForecast) {
+    weatherDao.deleteWeatherForecast(weatherForecast)
+  }
 }

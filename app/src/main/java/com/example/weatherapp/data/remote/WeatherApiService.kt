@@ -16,7 +16,7 @@ interface WeatherApiService {
         @Query("lat") lat: Double = 25.2582,
         @Query("lon") lon : Double = 55.3047,
         @Query("appid") apiKey:String=WeatherApi.ApiKey,
-        @Query("unite") unite:String = "metric"
+        @Query("units") units:String = "metric"
 
     ): Response<CurrentWeather>
 
@@ -25,7 +25,8 @@ interface WeatherApiService {
         @Query("lat") lat:Double,
         @Query("lon") log: Double,
         @Query("appid") apiKey:String=WeatherApi.ApiKey,
-        @Query("exclude") exclude:String="hourly,minutely"
+        @Query("exclude") exclude:String="hourly,minutely",
+        @Query("units") units:String = "metric"
     ) : Response<WeatherForecast>
 
 

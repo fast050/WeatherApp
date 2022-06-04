@@ -10,4 +10,12 @@ interface WeatherRepository {
 
    suspend fun getWeatherForecastApi(lat:Double,log:Double) :Response<WeatherForecast>
 
+   suspend fun saveCurrentWeather(currentWeather: CurrentWeather)
+
+   suspend fun saveWeatherForecast(weatherForecast: WeatherForecast)
+
+   suspend fun deleteCurrentWeather(currentWeather: CurrentWeather)
+
+   suspend fun deleteWeatherForecast(weatherForecast: WeatherForecast)
+
 }

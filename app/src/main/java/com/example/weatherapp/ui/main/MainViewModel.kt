@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.weatherapp.data.model.currentweather.CurrentWeather
 import com.example.weatherapp.data.model.weatherforecast.Daily
+import com.example.weatherapp.data.model.weatherforecast.WeatherForecast
 import com.example.weatherapp.repository.WeatherRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -36,7 +37,37 @@ class MainViewModel @Inject constructor(private val weatherRepository: WeatherRe
             log = responseCurrentWeather.coord.lon
         ).body() ?: return@launch
 
-        _weatherForecast.value = responseWeatherForecast.daily
+        val dailyList = responseWeatherForecast.daily
 
+        //filter the dailyList from first day item index = 0
+        val filterDailyList = dailyList.filterIndexed { index, _ ->
+            index != 0
+        }
+
+        _weatherForecast.value = filterDailyList
     }
+
+//    fun setFavorite(
+//        isFavorite: Boolean,
+//        currentWeather: CurrentWeather?,
+//        weatherForecast: WeatherForecast?
+//    ) = viewModelScope.launch {
+//
+//        if (weatherForecast == null || currentWeather == null)
+//            return@launch
+//
+//        when (isFavorite) {
+//            true -> {
+//                weatherRepository.saveCurrentWeather(currentWeather)
+//                weatherRepository.saveWeatherForecast(weatherForecast)
+//            }
+//            false -> {
+//                weatherRepository.deleteCurrentWeather(currentWeather)
+//                weatherRepository.deleteWeatherForecast(weatherForecast)
+//
+//            }
+//        }
+//
+//    }
+
 }

@@ -3,25 +3,30 @@ package com.example.weatherapp.ui.main
 import android.os.Build
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.weatherapp.R
+import com.example.weatherapp.data.model.currentweather.CurrentWeather
+import com.example.weatherapp.data.model.weatherforecast.WeatherForecast
 import com.example.weatherapp.databinding.FragmentMainBinding
 import com.example.weatherapp.ui.adapter.WeatherForecastAdapter
+import com.example.weatherapp.ui.utils.dayOfTheWeek
 import dagger.hilt.android.AndroidEntryPoint
-import java.time.LocalDate
-import java.util.*
 
 
 @AndroidEntryPoint
 class MainFragment : Fragment() {
 
     private val viewModel: MainViewModel by viewModels()
-    private var _binding :FragmentMainBinding?=null
+    private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
-    private lateinit var adapter:WeatherForecastAdapter
+    private lateinit var adapter: WeatherForecastAdapter
+
+//    private var currentWeatherInfo :CurrentWeather? = null
+//    private var weatherForecastInfo :WeatherForecast? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,12 +41,12 @@ class MainFragment : Fragment() {
 
         val searchView = searchViewItem.actionView as SearchView
 
-        searchView.queryHint="Search city..."
+        searchView.queryHint = getString(R.string.search_hint)
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                if (query != null) {
-                    if (query.isNotEmpty())
+                query?.let { city ->
+                    if (city.isNotEmpty())
                         viewModel.getCurrentWeatherAndForecast(query)
                 }
                 return true
@@ -50,8 +55,7 @@ class MainFragment : Fragment() {
             override fun onQueryTextChange(newText: String?): Boolean {
                 return false
             }
-        }
-        )
+        })
 
 
     }
@@ -71,35 +75,40 @@ class MainFragment : Fragment() {
         // i could use local manager to get current time but i run out of time
         viewModel.getCurrentWeatherAndForecast("Dubai")
 
+
         binding.apply {
             setCurrentWeather()
             setRecyclerView()
+
+//            checkBox.setOnCheckedChangeListener { _, isChecked ->
+//                if (weatherForecastInfo!=null && currentWeatherInfo!=null){
+//                    viewModel.setFavorite(isChecked,currentWeatherInfo,weatherForecastInfo)
+//                }
+//            }
+
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun FragmentMainBinding.setCurrentWeather()
-    {
-        viewModel.observeCurrentWeather.observe(viewLifecycleOwner){
-            FeelLikeMain.text = it.weatherProperties.feels_like.toString()
-            val day = LocalDate.now().dayOfWeek.name
-            currentDayMain.text=day
-            temperatureMain.text= it.weatherProperties.temp.toString()
-            descriptionMain.text=it.weatherDescription[0].main
 
+    private fun FragmentMainBinding.setCurrentWeather() {
+        viewModel.observeCurrentWeather.observe(viewLifecycleOwner) {
+            FeelLikeMain.text = getString(R.string.feel_like, it.weatherProperties.feels_like.toInt().toString())
+            cityMain.text = it.cityName
+            currentDayMain.text = dayOfTheWeek()
+            temperatureMain.text = getString(R.string.temperature, it.weatherProperties.temp.toInt().toString())
+            descriptionMain.text = it.weatherDescription[0].main
             // i could use ext function but i run out of time
-            windMain.text=it.wind.speed.toString()+"km/h"
-            humidityMain.text=it.weatherProperties.humidity.toString()+"%"
-            prussureMain.text=it.weatherProperties.pressure.toString()+""
+            windMain.text = getString(R.string.wind, it.wind.speed.toString())
+            humidityMain.text = getString(R.string.humidity, it.weatherProperties.humidity.toString())
+            prussureMain.text = it.weatherProperties.pressure.toString() + ""
         }
 
     }
 
-    fun FragmentMainBinding.setRecyclerView()
-    {
-        viewModel.observeWeatherForecast.observe(viewLifecycleOwner){
-            adapter= WeatherForecastAdapter(it)
-            forecastRecyclerViewMain.adapter=adapter
+    private fun FragmentMainBinding.setRecyclerView() {
+        viewModel.observeWeatherForecast.observe(viewLifecycleOwner) {
+            adapter = WeatherForecastAdapter(it)
+            forecastRecyclerViewMain.adapter = adapter
         }
 
 
@@ -107,7 +116,7 @@ class MainFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding=null
+        _binding = null
     }
 
 }
