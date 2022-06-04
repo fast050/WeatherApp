@@ -25,8 +25,7 @@ class MainFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var adapter: WeatherForecastAdapter
 
-//    private var currentWeatherInfo :CurrentWeather? = null
-//    private var weatherForecastInfo :WeatherForecast? = null
+    private var currentWeatherInfo :CurrentWeather? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +47,7 @@ class MainFragment : Fragment() {
                 query?.let { city ->
                     if (city.isNotEmpty())
                         viewModel.getCurrentWeatherAndForecast(query)
+                        binding.checkBox.isChecked=false
                 }
                 return true
             }
@@ -80,11 +80,9 @@ class MainFragment : Fragment() {
             setCurrentWeather()
             setRecyclerView()
 
-//            checkBox.setOnCheckedChangeListener { _, isChecked ->
-//                if (weatherForecastInfo!=null && currentWeatherInfo!=null){
-//                    viewModel.setFavorite(isChecked,currentWeatherInfo,weatherForecastInfo)
-//                }
-//            }
+            checkBox.setOnCheckedChangeListener { _, isChecked ->
+                    viewModel.setFavorite(isChecked,currentWeatherInfo)
+            }
 
         }
     }
@@ -92,7 +90,8 @@ class MainFragment : Fragment() {
 
     private fun FragmentMainBinding.setCurrentWeather() {
         viewModel.observeCurrentWeather.observe(viewLifecycleOwner) {
-            FeelLikeMain.text = getString(R.string.feel_like, it.weatherProperties.feels_like.toInt().toString())
+
+            feelLikeMain.text = getString(R.string.feel_like, it.weatherProperties.feels_like.toInt().toString())
             cityMain.text = it.cityName
             currentDayMain.text = dayOfTheWeek()
             temperatureMain.text = getString(R.string.temperature, it.weatherProperties.temp.toInt().toString())
@@ -100,7 +99,8 @@ class MainFragment : Fragment() {
             // i could use ext function but i run out of time
             windMain.text = getString(R.string.wind, it.wind.speed.toString())
             humidityMain.text = getString(R.string.humidity, it.weatherProperties.humidity.toString())
-            prussureMain.text = it.weatherProperties.pressure.toString() + ""
+            prussureMain.text = getString(R.string.pressure,it.weatherProperties.pressure.toString())
+            currentWeatherInfo=it
         }
 
     }

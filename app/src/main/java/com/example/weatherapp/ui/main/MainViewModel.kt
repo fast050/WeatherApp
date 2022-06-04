@@ -47,27 +47,23 @@ class MainViewModel @Inject constructor(private val weatherRepository: WeatherRe
         _weatherForecast.value = filterDailyList
     }
 
-//    fun setFavorite(
-//        isFavorite: Boolean,
-//        currentWeather: CurrentWeather?,
-//        weatherForecast: WeatherForecast?
-//    ) = viewModelScope.launch {
-//
-//        if (weatherForecast == null || currentWeather == null)
-//            return@launch
-//
-//        when (isFavorite) {
-//            true -> {
-//                weatherRepository.saveCurrentWeather(currentWeather)
-//                weatherRepository.saveWeatherForecast(weatherForecast)
-//            }
-//            false -> {
-//                weatherRepository.deleteCurrentWeather(currentWeather)
-//                weatherRepository.deleteWeatherForecast(weatherForecast)
-//
-//            }
-//        }
-//
-//    }
+    fun setFavorite(
+        isFavorite: Boolean,
+        currentWeather: CurrentWeather?,
+    ) = viewModelScope.launch {
+
+        if (currentWeather == null)
+            return@launch
+
+        when (isFavorite) {
+            true -> {
+                weatherRepository.saveCurrentWeather(currentWeather)
+            }
+            false -> {
+                weatherRepository.deleteCurrentWeather(currentWeather)
+            }
+        }
+
+    }
 
 }

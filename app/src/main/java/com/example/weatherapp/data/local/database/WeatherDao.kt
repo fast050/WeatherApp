@@ -26,8 +26,11 @@ interface WeatherDao {
 
 
     @Query("select * from CurrentWeather")
-    fun getCurrentWeather(): LiveData<CurrentWeather>
+    fun getCurrentWeather(): LiveData<List<CurrentWeather>>
 
     @Query("select * from WeatherForecast")
-    fun getWeatherForecast(): LiveData<WeatherForecast>
+    fun getWeatherForecast(): LiveData<List<WeatherForecast>>
+
+    @Query("select * from CurrentWeather where id =:id")
+    fun getCurrentWeatherById(id:Int):LiveData<CurrentWeather>
 }

@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.weatherapp.R
@@ -23,8 +24,8 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    lateinit var navController: NavController
-
+    private lateinit var navController: NavController
+    private lateinit var appBarConfiguration: AppBarConfiguration
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
@@ -32,16 +33,20 @@ class MainActivity : AppCompatActivity() {
 
         binding.apply {
 
+
+            appBarConfiguration= AppBarConfiguration(setOf(
+                R.id.mainFragment,R.id.favoriteFragment
+            ))
+
             val navHostFragment =
                 supportFragmentManager.findFragmentById(navHostFragmentMain.id) as NavHostFragment
-            val navController = navHostFragment.navController
+            navController = navHostFragment.navController
 
-            setupActionBarWithNavController(navController)
+            setupActionBarWithNavController(navController,appBarConfiguration)
 
             bottomNavigationViewMain.setupWithNavController(navController)
 
         }
-
 
 
     }

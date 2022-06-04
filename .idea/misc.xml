@@ -15,8 +15,10 @@
         <entry key="..\:/Users/Khalid Elfaki/AndroidStudioProjects/WeatherApp/app/src/main/res/drawable/ic_favorite_full.xml" value="0.1065" />
         <entry key="..\:/Users/Khalid Elfaki/AndroidStudioProjects/WeatherApp/app/src/main/res/drawable/selector_favorite.xml" value="0.1" />
         <entry key="..\:/Users/Khalid Elfaki/AndroidStudioProjects/WeatherApp/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/Khalid Elfaki/AndroidStudioProjects/WeatherApp/app/src/main/res/layout/favorite_weather_item.xml" value="0.33" />
         <entry key="..\:/Users/Khalid Elfaki/AndroidStudioProjects/WeatherApp/app/src/main/res/layout/forecast_weather_item.xml" value="0.5" />
-        <entry key="..\:/Users/Khalid Elfaki/AndroidStudioProjects/WeatherApp/app/src/main/res/layout/fragment_favorite.xml" value="0.14792299898682879" />
+        <entry key="..\:/Users/Khalid Elfaki/AndroidStudioProjects/WeatherApp/app/src/main/res/layout/fragment_favorite.xml" value="0.25" />
+        <entry key="..\:/Users/Khalid Elfaki/AndroidStudioProjects/WeatherApp/app/src/main/res/layout/fragment_favorite_detail.xml" value="0.33" />
         <entry key="..\:/Users/Khalid Elfaki/AndroidStudioProjects/WeatherApp/app/src/main/res/layout/fragment_main.xml" value="0.25" />
         <entry key="..\:/Users/Khalid Elfaki/AndroidStudioProjects/WeatherApp/app/src/main/res/menu/bottom_nav_menu.xml" value="0.2994871794871795" />
         <entry key="..\:/Users/Khalid Elfaki/AndroidStudioProjects/WeatherApp/app/src/main/res/menu/main_menu.xml" value="0.2" />
