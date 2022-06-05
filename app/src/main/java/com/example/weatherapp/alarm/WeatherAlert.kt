@@ -18,7 +18,7 @@ class WeatherAlert : BroadcastReceiver() {
         Log.d("TAG", "onReceive: it happen")
 
         if (context != null) {
-            notify(context, "weather today")
+            notify(context, "weather today", "Check weather App to know what is the temperature")
         }
     }
 
