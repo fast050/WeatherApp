@@ -1,20 +1,38 @@
 package com.example.weatherapp.ui.main
 
+import android.Manifest
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Address
+import android.location.Geocoder
+import android.location.Location
+import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.SearchView
+import androidx.constraintlayout.motion.widget.Debug.getLocation
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import androidx.preference.PreferenceManager
 import com.example.weatherapp.R
 import com.example.weatherapp.data.model.currentweather.CurrentWeather
 import com.example.weatherapp.data.model.weatherforecast.WeatherForecast
 import com.example.weatherapp.databinding.FragmentMainBinding
 import com.example.weatherapp.ui.adapter.WeatherForecastAdapter
+import com.example.weatherapp.ui.setting.TemperatureUnits
 import com.example.weatherapp.ui.utils.dayOfTheWeek
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.*
 
 
 @AndroidEntryPoint
@@ -25,7 +43,8 @@ class MainFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var adapter: WeatherForecastAdapter
 
-    private var currentWeatherInfo :CurrentWeather? = null
+    private var currentWeatherInfo: CurrentWeather? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +66,7 @@ class MainFragment : Fragment() {
                 query?.let { city ->
                     if (city.isNotEmpty())
                         viewModel.getCurrentWeatherAndForecast(query)
-                        binding.checkBox.isChecked=false
+                    binding.checkBox.isChecked = false
                 }
                 return true
             }
@@ -60,6 +79,20 @@ class MainFragment : Fragment() {
 
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        when (item.itemId) {
+
+            R.id.setting -> {
+                val action = R.id.action_mainFragment_to_settingsFragment
+                findNavController().navigate(action)
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -69,11 +102,17 @@ class MainFragment : Fragment() {
     }
 
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // i could use local manager to get current time but i run out of time
-        viewModel.getCurrentWeatherAndForecast("Dubai")
+
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+        val units  = sharedPreferences.getString(
+            getString(R.string.temperature_unit_key),
+            TemperatureUnits.Celsius.unit
+        )
+        viewModel.getCurrentWeatherAndForecast("Dubai",units)
 
 
         binding.apply {
@@ -81,26 +120,32 @@ class MainFragment : Fragment() {
             setRecyclerView()
 
             checkBox.setOnCheckedChangeListener { _, isChecked ->
-                    viewModel.setFavorite(isChecked,currentWeatherInfo)
+                viewModel.setFavorite(isChecked, currentWeatherInfo)
             }
 
         }
+
+
     }
 
 
     private fun FragmentMainBinding.setCurrentWeather() {
         viewModel.observeCurrentWeather.observe(viewLifecycleOwner) {
 
-            feelLikeMain.text = getString(R.string.feel_like, it.weatherProperties.feels_like.toInt().toString())
+            feelLikeMain.text =
+                getString(R.string.feel_like, it.weatherProperties.feels_like.toInt().toString())
             cityMain.text = it.cityName
             currentDayMain.text = dayOfTheWeek()
-            temperatureMain.text = getString(R.string.temperature, it.weatherProperties.temp.toInt().toString())
+            temperatureMain.text =
+                getString(R.string.temperature, it.weatherProperties.temp.toInt().toString())
             descriptionMain.text = it.weatherDescription[0].main
             // i could use ext function but i run out of time
             windMain.text = getString(R.string.wind, it.wind.speed.toString())
-            humidityMain.text = getString(R.string.humidity, it.weatherProperties.humidity.toString())
-            prussureMain.text = getString(R.string.pressure,it.weatherProperties.pressure.toString())
-            currentWeatherInfo=it
+            humidityMain.text =
+                getString(R.string.humidity, it.weatherProperties.humidity.toString())
+            prussureMain.text =
+                getString(R.string.pressure, it.weatherProperties.pressure.toString())
+            currentWeatherInfo = it
         }
 
     }

@@ -1,25 +1,18 @@
 package com.example.weatherapp.ui
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import androidx.lifecycle.lifecycleScope
+import android.view.Menu
+import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.weatherapp.R
-import com.example.weatherapp.data.local.database.WeatherDao
-import com.example.weatherapp.data.remote.WeatherApi
-import com.example.weatherapp.data.remote.WeatherApiService
 import com.example.weatherapp.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -34,15 +27,17 @@ class MainActivity : AppCompatActivity() {
         binding.apply {
 
 
-            appBarConfiguration= AppBarConfiguration(setOf(
-                R.id.mainFragment,R.id.favoriteFragment
-            ))
+            appBarConfiguration = AppBarConfiguration(
+                setOf(
+                    R.id.mainFragment, R.id.favoriteFragment
+                )
+            )
 
             val navHostFragment =
                 supportFragmentManager.findFragmentById(navHostFragmentMain.id) as NavHostFragment
             navController = navHostFragment.navController
 
-            setupActionBarWithNavController(navController,appBarConfiguration)
+            setupActionBarWithNavController(navController, appBarConfiguration)
 
             bottomNavigationViewMain.setupWithNavController(navController)
 
@@ -50,6 +45,7 @@ class MainActivity : AppCompatActivity() {
 
 
     }
+
 
     override fun onSupportNavigateUp(): Boolean {
         return super.onSupportNavigateUp() || navController.navigateUp()

@@ -1,0 +1,21 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="General">
+
+        <ListPreference
+            app:defaultValue=""
+            app:entries="@array/temperature_units_entries"
+            app:entryValues="@array/temperature_unit_values"
+            app:key="@string/temperature_unit_key"
+            app:title="Temperature Unit"
+            app:useSimpleSummaryProvider="true" />
+
+        <SwitchPreferenceCompat
+            app:key="@string/weather_notification_key"
+            app:summaryOff="notifications about weather is off"
+            app:summaryOn="notifications about the weather is on"
+            app:title="notifications" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

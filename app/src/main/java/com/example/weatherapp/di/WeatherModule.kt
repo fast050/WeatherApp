@@ -57,4 +57,5 @@ object WeatherModule {
         weatherApiService: WeatherApiService,
         weatherDao: WeatherDao
     ): WeatherRepository = WeatherRepositoryImpl(weatherApiService, weatherDao)
+
 }

@@ -2,6 +2,7 @@ package com.example.weatherapp.data.remote
 
 import com.example.weatherapp.data.model.currentweather.CurrentWeather
 import com.example.weatherapp.data.model.weatherforecast.WeatherForecast
+import com.example.weatherapp.ui.setting.TemperatureUnits
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -16,7 +17,7 @@ interface WeatherApiService {
         @Query("lat") lat: Double = 25.2582,
         @Query("lon") lon : Double = 55.3047,
         @Query("appid") apiKey:String=WeatherApi.ApiKey,
-        @Query("units") units:String = "metric"
+        @Query("units") units:String = TemperatureUnits.Celsius.unit
 
     ): Response<CurrentWeather>
 

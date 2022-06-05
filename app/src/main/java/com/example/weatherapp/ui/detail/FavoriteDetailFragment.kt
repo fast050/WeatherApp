@@ -44,7 +44,7 @@ class FavoriteDetailFragment : Fragment() {
            cityDetail.text = it.cityName
            descriptionDetail.text=it.weatherDescription[0].main
            temperatureDetail.text = getString(R.string.temperature,it.weatherProperties.temp.toInt().toString())
-           feelLikeDetail.text=getString(R.string.feel_like,it.weatherProperties.feels_like.toString())
+           feelLikeDetail.text=getString(R.string.feel_like,it.weatherProperties.feels_like.toInt().toString())
            windDetail.text=getString(R.string.wind,it.wind.speed.toString())
            humidityDetail.text=getString(R.string.humidity,it.weatherProperties.humidity.toString())
            prussureDetail.text=getString(R.string.pressure,it.weatherProperties.pressure.toString())

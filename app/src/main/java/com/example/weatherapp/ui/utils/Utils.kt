@@ -12,6 +12,6 @@ fun dayOfTheWeek(dayIndex: Int = 0,startDay:Int=0): String {
     calendar.add(Calendar.DATE, startDay+ dayIndex)
     val date = calendar.time
     val format: Format = SimpleDateFormat("EEEE")
-
     return format.format(date)
 }
+

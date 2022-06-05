@@ -7,7 +7,11 @@
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.example.weatherapp.ui.main.MainFragment"
-        android:label="Home" />
+        android:label="Home" >
+        <action
+            android:id="@+id/action_mainFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/favoriteFragment"
         android:name="com.example.weatherapp.ui.favorite.FavoriteFragment"
@@ -26,4 +30,8 @@
             android:name="current_weather_id"
             app:argType="integer" />
     </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.weatherapp.ui.setting.SettingsFragment"
+        android:label="SettingsFragment" />
 </navigation>
