@@ -57,8 +57,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
         val intent = Intent(context, WeatherAlert::class.java)
         val alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0)
 
-        // Set the alarm to start at 8:30 a.m.
-
        // Set the alarm to start at 6:00 a.m.
         val calendar = Calendar.getInstance()
         calendar.timeInMillis = System.currentTimeMillis()

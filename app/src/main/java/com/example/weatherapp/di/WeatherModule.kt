@@ -1,6 +1,8 @@
 package com.example.weatherapp.di
 
 import android.content.Context
+import android.content.SharedPreferences
+import androidx.preference.PreferenceManager
 import androidx.room.Room
 import com.example.weatherapp.data.local.database.WeatherDao
 import com.example.weatherapp.data.local.database.WeatherDatabase
@@ -13,9 +15,12 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
+import javax.inject.Qualifier
 import javax.inject.Singleton
 
 
@@ -40,7 +45,7 @@ object WeatherModule {
             context,
             WeatherDatabase::class.java,
             WeatherDatabase.DATABASE_NAME
-        )
+        ).fallbackToDestructiveMigration()
             .build()
     }
 
@@ -51,11 +56,30 @@ object WeatherModule {
         return weatherDatabase.userDao()
     }
 
+
+    @Singleton
+    @Provides
+    @ApplicationCoroutineScope
+    fun provideCoroutineScope() = CoroutineScope(SupervisorJob())
+
     @Singleton
     @Provides
     fun providerWeatherRepository(
         weatherApiService: WeatherApiService,
-        weatherDao: WeatherDao
-    ): WeatherRepository = WeatherRepositoryImpl(weatherApiService, weatherDao)
+        weatherDao: WeatherDao,
+       @ApplicationCoroutineScope  scope: CoroutineScope
+    ): WeatherRepository = WeatherRepositoryImpl(weatherApiService, weatherDao,scope)
+
+
+
+    @Singleton
+    @Provides
+    fun provideSharedPreference(@ApplicationContext context: Context): SharedPreferences {
+        return PreferenceManager.getDefaultSharedPreferences(context)
+    }
+
 
 }
+
+@Qualifier
+annotation class ApplicationCoroutineScope

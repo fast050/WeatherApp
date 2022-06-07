@@ -2,28 +2,35 @@ package com.example.weatherapp.repository
 
 import androidx.lifecycle.LiveData
 import com.example.weatherapp.data.model.currentweather.CurrentWeather
+import com.example.weatherapp.data.model.favorite.FavoriteWeather
 import com.example.weatherapp.data.model.weatherforecast.WeatherForecast
 import com.example.weatherapp.ui.setting.TemperatureUnits
+import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
+import java.util.concurrent.TimeUnit
 
 interface WeatherRepository {
 
-   suspend fun getCurrentWeatherApi(city:String,units: String) :Response<CurrentWeather>
+//
+   fun observeCurrentWeather(): Flow<CurrentWeather>
 
-   suspend fun getWeatherForecastApi(lat:Double,log:Double,units: String) :Response<WeatherForecast>
+   suspend fun requestCurrentWeather(cityName:String)
 
-   suspend fun saveCurrentWeather(currentWeather: CurrentWeather)
+   suspend fun requestWeatherForecast(lat: Double, lon: Double)
 
-   suspend fun saveWeatherForecast(weatherForecast: WeatherForecast)
+   fun observeWeatherForecast():Flow<WeatherForecast>
 
-   suspend fun deleteCurrentWeather(currentWeather: CurrentWeather)
 
-   suspend fun deleteWeatherForecast(weatherForecast: WeatherForecast)
+   /*
+   /   favorite fragment
+    */
 
-   fun observeLocalCurrentWeather():LiveData<List<CurrentWeather>>
+   suspend fun saveFavoriteWeather(favoriteWeather: FavoriteWeather)
 
-   fun observeLocalWeatherForecast():LiveData<List<WeatherForecast>>
+   suspend fun deleteFavoriteWeather(favoriteWeather: FavoriteWeather)
 
-   fun getLocalCurrentWeather(id :Int) :LiveData<CurrentWeather>
+   fun observeAllFavoriteWeather() :LiveData<List<FavoriteWeather>>
+
+   fun observeFavoriteWeatherById(Id:Int) : LiveData<FavoriteWeather>
 
 }

@@ -7,7 +7,9 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy.IGNORE
 import androidx.room.Query
 import com.example.weatherapp.data.model.currentweather.CurrentWeather
+import com.example.weatherapp.data.model.favorite.FavoriteWeather
 import com.example.weatherapp.data.model.weatherforecast.WeatherForecast
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface WeatherDao {
@@ -24,13 +26,25 @@ interface WeatherDao {
     @Delete
     suspend fun deleteWeatherForecast(weatherForecast: WeatherForecast)
 
+    @Insert(onConflict = IGNORE)
+    suspend fun insertFavorite(favoriteWeather: FavoriteWeather)
 
+    @Delete
+    suspend fun deleteFavorite(favoriteWeather: FavoriteWeather)
+
+
+    //main
     @Query("select * from CurrentWeather")
-    fun getCurrentWeather(): LiveData<List<CurrentWeather>>
+    fun getCurrentWeather(): Flow<CurrentWeather?>
 
     @Query("select * from WeatherForecast")
-    fun getWeatherForecast(): LiveData<List<WeatherForecast>>
+    fun getWeatherForecast(): Flow<WeatherForecast?>
 
-    @Query("select * from CurrentWeather where id =:id")
-    fun getCurrentWeatherById(id:Int):LiveData<CurrentWeather>
+
+    //favorite
+    @Query("select * from FavoriteWeather")
+    fun getAllFavoriteWeather():LiveData<List<FavoriteWeather>>
+
+    @Query("select * from FavoriteWeather where id=:id")
+    fun getFavoriteWeatherById(id: Int):LiveData<FavoriteWeather>
 }

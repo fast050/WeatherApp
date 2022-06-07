@@ -1,18 +1,26 @@
 package com.example.weatherapp.ui.adapter
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weatherapp.R
 import com.example.weatherapp.data.model.currentweather.CurrentWeather
+import com.example.weatherapp.data.model.favorite.FavoriteWeather
 import com.example.weatherapp.databinding.FavoriteWeatherItemBinding
 import com.example.weatherapp.databinding.ForecastWeatherItemBinding
+import com.example.weatherapp.ui.setting.TemperatureUnits
 import com.example.weatherapp.ui.utils.dayOfTheWeek
+import com.example.weatherapp.ui.utils.temperatureUnits
 
 
-class FavoriteAdapter(private val weatherFavoriteList: List<CurrentWeather>, val listener : (Int)->(Unit) ):
+class FavoriteAdapter(
+    private val weatherFavoriteList: List<FavoriteWeather>,
+    val listener: (Int) -> (Unit)
+) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
@@ -36,20 +44,23 @@ class FavoriteAdapter(private val weatherFavoriteList: List<CurrentWeather>, val
 
 
         private val resource = context.resources
+        private val sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
-        fun bind(item: CurrentWeather) {
+        private val units = sharedPreferences.getString(
+            resource.getString(R.string.temperature_unit_key),
+            TemperatureUnits.Celsius.unit
+        ) ?: TemperatureUnits.Celsius.unit
+
+        fun bind(item: FavoriteWeather) {
 
             binding.apply {
                 cityFavorite.text = item.cityName
-                descriptionFavorite.text = item.weatherDescription[0].main
+                descriptionFavorite.text = item.description
                 temperatureFavorite.text = resource.getString(
                     R.string.temperature,
-                    item.weatherProperties.temp.toInt().toString()
+                    temperatureUnits(item.temperature, units).toString()
                 )
-                feelLikeFavorite.text = resource.getString(
-                    R.string.feel_like,
-                    item.weatherProperties.feels_like.toString()
-                )
+                feelLikeFavorite.text = resource.getString(R.string.feel_like, temperatureUnits(item.feelLike, units).toString())
 
 
                 binding.root.setOnClickListener {

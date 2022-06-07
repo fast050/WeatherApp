@@ -29,6 +29,7 @@ import com.example.weatherapp.databinding.FragmentMainBinding
 import com.example.weatherapp.ui.adapter.WeatherForecastAdapter
 import com.example.weatherapp.ui.setting.TemperatureUnits
 import com.example.weatherapp.ui.utils.dayOfTheWeek
+import com.example.weatherapp.ui.utils.temperatureUnits
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.AndroidEntryPoint
@@ -102,21 +103,20 @@ class MainFragment : Fragment() {
     }
 
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-        val units  = sharedPreferences.getString(
+        val units = sharedPreferences.getString(
             getString(R.string.temperature_unit_key),
             TemperatureUnits.Celsius.unit
-        )
-        viewModel.getCurrentWeatherAndForecast("Dubai",units)
+        ) ?: TemperatureUnits.Celsius.unit
+
+        initCurrentWeather()
 
 
         binding.apply {
-            setCurrentWeather()
+            setCurrentWeather(units)
             setRecyclerView()
 
             checkBox.setOnCheckedChangeListener { _, isChecked ->
@@ -128,24 +128,38 @@ class MainFragment : Fragment() {
 
     }
 
+    private fun initCurrentWeather() {
 
-    private fun FragmentMainBinding.setCurrentWeather() {
+
+        viewModel.getCurrentWeatherAndForecast("Dubai")
+    }
+
+
+    private fun FragmentMainBinding.setCurrentWeather(units: String) {
         viewModel.observeCurrentWeather.observe(viewLifecycleOwner) {
 
-            feelLikeMain.text =
-                getString(R.string.feel_like, it.weatherProperties.feels_like.toInt().toString())
-            cityMain.text = it.cityName
-            currentDayMain.text = dayOfTheWeek()
-            temperatureMain.text =
-                getString(R.string.temperature, it.weatherProperties.temp.toInt().toString())
-            descriptionMain.text = it.weatherDescription[0].main
-            // i could use ext function but i run out of time
-            windMain.text = getString(R.string.wind, it.wind.speed.toString())
-            humidityMain.text =
-                getString(R.string.humidity, it.weatherProperties.humidity.toString())
-            prussureMain.text =
-                getString(R.string.pressure, it.weatherProperties.pressure.toString())
-            currentWeatherInfo = it
+            it?.let {
+
+
+                feelLikeMain.text =getString(R.string.feel_like, temperatureUnits(it.weatherProperties.feels_like, units).toString())
+                cityMain.text = it.cityName
+                currentDayMain.text = dayOfTheWeek()
+                temperatureMain.text =
+                    getString(
+                        R.string.temperature,
+                        temperatureUnits(it.weatherProperties.temp, units)
+                    )
+                descriptionMain.text = it.weatherDescription[0].main
+                // i could use ext function but i run out of time
+                windMain.text = getString(R.string.wind, it.wind.speed.toString())
+                humidityMain.text =
+                    getString(R.string.humidity, it.weatherProperties.humidity.toString())
+                prussureMain.text =
+                    getString(R.string.pressure, it.weatherProperties.pressure.toString())
+                currentWeatherInfo = it
+
+            }
+
         }
 
     }

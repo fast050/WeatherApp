@@ -7,11 +7,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.weatherapp.data.local.preference.SettingPreference
 import com.example.weatherapp.data.model.currentweather.CurrentWeather
+import com.example.weatherapp.data.model.favorite.FavoriteWeather
 import com.example.weatherapp.data.model.weatherforecast.Daily
 import com.example.weatherapp.data.model.weatherforecast.WeatherForecast
 import com.example.weatherapp.repository.WeatherRepository
 import com.example.weatherapp.ui.setting.TemperatureUnits
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,40 +23,42 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
 
 
-    init {
-        getCurrentWeatherAndForecast("dubai")
-    }
-
     val observeCurrentWeather: LiveData<CurrentWeather>
         get() = _currentWeather
     private val _currentWeather = MutableLiveData<CurrentWeather>()
+
 
     val observeWeatherForecast: LiveData<List<Daily>>
         get() = _weatherForecast
     private val _weatherForecast = MutableLiveData<List<Daily>>()
 
 
-    fun getCurrentWeatherAndForecast(city: String, units: String? = TemperatureUnits.Celsius.unit) =
+    fun getCurrentWeatherAndForecast(
+        city: String
+        //       , units: String? = TemperatureUnits.Celsius.unit
+    ) =
         viewModelScope.launch {
-            val responseCurrentWeather =
-                units?.let { weatherRepository.getCurrentWeatherApi(city, it).body() } ?: return@launch
 
-            _currentWeather.value = responseCurrentWeather
 
-            val responseWeatherForecast = weatherRepository.getWeatherForecastApi(
-                lat = responseCurrentWeather.coord.lat,
-                log = responseCurrentWeather.coord.lon,
-                units = units
-            ).body() ?: return@launch
+            weatherRepository.requestCurrentWeather(city)
 
-            val dailyList = responseWeatherForecast.daily
+            val weatherData = weatherRepository.observeCurrentWeather().first()
 
-            //filter the dailyList from first day item index = 0
-            val filterDailyList = dailyList.filterIndexed { index, _ ->
-                index != 0
+            _currentWeather.value = weatherData
+
+            weatherData?.let {
+                weatherRepository.requestWeatherForecast(lat = it.coord.lat,lon= it.coord.lon)
+
+                val forecastData = weatherRepository.observeWeatherForecast().first()
+                //filter the dailyList from first day item index = 0
+                val filterDailyList = forecastData.daily.filterIndexed { index, _ ->
+                    index != 0
+                }
+
+                _weatherForecast.value=filterDailyList
             }
 
-            _weatherForecast.value = filterDailyList
+
         }
 
     fun setFavorite(
@@ -65,12 +69,23 @@ class MainViewModel @Inject constructor(
         if (currentWeather == null)
             return@launch
 
+        val favorite = FavoriteWeather(
+            id = currentWeather.id,
+            feelLike = currentWeather.weatherProperties.feels_like,
+            description = currentWeather.weatherDescription[0].main,
+            temperature = currentWeather.weatherProperties.temp,
+            cityName = currentWeather.cityName,
+            humidity = currentWeather.weatherProperties.humidity,
+            windSpeed = currentWeather.wind.speed,
+            pressure = currentWeather.weatherProperties.pressure
+        )
+
         when (isFavorite) {
             true -> {
-                weatherRepository.saveCurrentWeather(currentWeather)
+                weatherRepository.saveFavoriteWeather(favorite)
             }
             false -> {
-                weatherRepository.deleteCurrentWeather(currentWeather)
+                weatherRepository.deleteFavoriteWeather(favorite)
             }
         }
 

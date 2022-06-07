@@ -24,7 +24,7 @@ interface WeatherApiService {
     @GET("onecall")                       //lat=33.44&lon=-94.04&appid=638873d67ed5e6b048959ade3c44ce47&exclude=hourly,minutely
     suspend fun getWeatherForecast(
         @Query("lat") lat:Double,
-        @Query("lon") log: Double,
+        @Query("lon") lon: Double,
         @Query("appid") apiKey:String=WeatherApi.ApiKey,
         @Query("exclude") exclude:String="hourly,minutely",
         @Query("units") units:String = "metric"

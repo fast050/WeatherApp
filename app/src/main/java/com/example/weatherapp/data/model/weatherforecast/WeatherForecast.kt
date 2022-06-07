@@ -8,8 +8,6 @@ data class WeatherForecast(
     @PrimaryKey(autoGenerate = true)
     val id:Int,
     val daily: List<Daily>,
-    val lat: Double,
-    val lon: Double,
 )
 
 data class Daily(
